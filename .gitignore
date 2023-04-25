@@ -1,8 +1,5 @@
 /.idea/.gitignore
-/.idea/laravel-todos-structurizer.iml
-/.idea/modules.xml
-/.idea/php.xml
-/.idea/vcs.xml
+/.idea/*.xml
 /vendor/bin/carbon
 /vendor/composer/autoload_classmap.php
 /vendor/composer/autoload_files.php
