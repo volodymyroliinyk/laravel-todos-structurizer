@@ -1,0 +1,38 @@
+{
+  "name": "volodymyroliinyk/laravel-todos-structurizer",
+  "description": "The package helps structurize all todos",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "role": "Developer",
+      "name": "Volodymyr Oliinyk",
+      "email": "volodymyr.oliinyk.name@gmail.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "VolodymyrOliinyk\\TodosStructurizer\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "VolodymyrOliinyk\\TodosStructurizer\\Tests\\": "tests/"
+    }
+  },
+  "require": {
+    "php": "^8.0|^8.1|^8.2",
+    "illuminate/support": "^8.0|^9.0|^10.0",
+    "illuminate/console": "^8.0|^9.0|^10.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.0|^9.3"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "config": {
+    "sort-packages": true,
+    "preferred-install": "dist",
+    "optimize-autoloader": true
+  }
+}
