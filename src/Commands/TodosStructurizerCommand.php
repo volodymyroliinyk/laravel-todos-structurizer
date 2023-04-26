@@ -8,14 +8,14 @@ use Illuminate\Console\Command;
  * @pattern (JetBrains PhpStorm) \bTODO\:((.|\n)*)\:ENDTODO\b*
  * @ussage TODO:[category|priority:<high|medium|low>]:<free multiline text>:ENDTODO
  */
-final class TodosStructurizedCommand extends Command
+final class TodosStructurizerCommand extends Command
 {
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = 'todos-structurized:collect ' .
+    protected $signature = 'todos-structurizer:collect ' .
     '{--category= : task category name}  ';
 
     const PATTERN_1 = '/(TODO\:([\S\s]*?)\:ENDTODO)+/sm';
@@ -97,7 +97,7 @@ final class TodosStructurizedCommand extends Command
             });
         }
 
-        /* TODO:[todos-structurized]:
+        /* TODO:[todos-structurizer]:
         Filter output by priority.
         :ENDTODO */
 
@@ -194,7 +194,7 @@ final class TodosStructurizedCommand extends Command
      */
     private function getDirectories(): array
     {
-        $todoCollectorConfig = config('todos-structurized');
+        $todoCollectorConfig = config('todos-structurizer');
         $allDirectories = [];
 
         foreach ($todoCollectorConfig['directories'] as $directory) {
@@ -211,7 +211,7 @@ final class TodosStructurizedCommand extends Command
      */
     private function getDirectoriesIgnored(): array
     {
-        $todoCollectorConfig = config('todos-structurized');
+        $todoCollectorConfig = config('todos-structurizer');
         $allDirectories = [];
 
         foreach ($todoCollectorConfig['directories-ignored'] as $directory) {
