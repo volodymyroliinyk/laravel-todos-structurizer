@@ -35,10 +35,8 @@ final class TodosStructurizerCommand extends Command
 
     /**
      * Execute the console command.
-     *
-     * @return int
      */
-    public function handle():void
+    public function handle()
     {
         $this->line('');
         $this->line($this->description);
