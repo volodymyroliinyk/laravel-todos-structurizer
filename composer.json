@@ -34,5 +34,15 @@
     "sort-packages": true,
     "preferred-install": "dist",
     "optimize-autoloader": true
+  },
+  "extra": {
+    "branch-alias": {
+      "dev-master": "v0.1.1-alpha"
+    },
+    "laravel": {
+      "providers": [
+        "VolodymyrOliinyk\\TodosStructurizer\\PackageServiceProvider"
+      ]
+    }
   }
 }
