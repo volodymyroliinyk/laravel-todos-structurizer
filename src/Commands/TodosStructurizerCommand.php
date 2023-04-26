@@ -15,10 +15,13 @@ final class TodosStructurizerCommand extends Command
      *
      * @var string
      */
-    protected $signature = 'todos-structurizer:collect ' .
+    protected string $signature = 'todos-structurizer:collect ' .
     '{--category= : task category name}  ';
 
+    // Pattern without category, priority.
     const PATTERN_1 = '/(TODO\:([\S\s]*?)\:ENDTODO)+/sm';
+
+    // Pattern with category, priority.
     const PATTERN_2 = '/(TODO\:\[(.*?)\]\:([\S\s]*?)\:ENDTODO)+/sm';
 
     const TODO_COLUMN_WIDTH = 80;
@@ -28,14 +31,14 @@ final class TodosStructurizerCommand extends Command
      *
      * @var string
      */
-    protected $description = 'Finding todos and structurizing by category or any tag.';
+    protected string $description = 'Finding todos and structurizing by category or any tag.';
 
     /**
      * Execute the console command.
      *
      * @return int
      */
-    public function handle()
+    public function handle():void
     {
         $this->line('');
         $this->line($this->description);
@@ -225,7 +228,7 @@ final class TodosStructurizerCommand extends Command
      * Getting files from directories, recursively.
      *
      * @param string $dir
-     * @param $results
+     * @param array $results
      * @return array|mixed
      */
     private function getDirFiles(string $dir, array &$results = [])
