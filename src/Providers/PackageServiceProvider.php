@@ -10,7 +10,8 @@ final class PackageServiceProvider extends ServiceProvider
 {
     public function boot()
     {
-        $configPath = __DIR__ . '/../config/todo-structurized.php';
+        $publishablePath = dirname(__DIR__).'/../publishable';
+        $configPath = $publishablePath . '/config/todo-structurized.php';
 
         $this->mergeConfigFrom($configPath, 'todo-structurized');
 
