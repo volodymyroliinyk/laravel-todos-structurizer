@@ -38,7 +38,7 @@
     },
     "laravel": {
       "providers": [
-        "VolodymyrOliinyk\\TodosStructurizer\\PackageServiceProvider"
+        "VolodymyrOliinyk\\TodosStructurizer\\Providers\\PackageServiceProvider"
       ]
     }
   }
