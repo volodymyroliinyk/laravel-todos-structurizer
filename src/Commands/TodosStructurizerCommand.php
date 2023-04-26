@@ -15,7 +15,7 @@ final class TodosStructurizerCommand extends Command
      *
      * @var string
      */
-    protected string $signature = 'todos-structurizer:collect ' .
+    protected $signature = 'todos-structurizer:collect ' .
     '{--category= : task category name}  ';
 
     // Pattern without category, priority.
@@ -31,7 +31,7 @@ final class TodosStructurizerCommand extends Command
      *
      * @var string
      */
-    protected string $description = 'Finding todos and structurizing by category or any tag.';
+    protected $description = 'Finding todos and structurizing by category or any tag.';
 
     /**
      * Execute the console command.
