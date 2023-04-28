@@ -12,19 +12,22 @@ lot of unstructured todos. And I found a way to do todos structured, this format
 
 ### How to install
 
-...
+- Run: `composer require volodymyroliinyk/laravel-todos-structurizer`
+- Or, add to the end of `require` section line: `"volodymyroliinyk/laravel-todos-structurizer": "^0.1.0"`
 
 ### How to use
 
-...
-
-todo
-
-- live test
-- fix and finish unit tests
-- readable readme
--
+- Run: `php artisan todos-structurizer:collect > result_todos_structurized.log`
+- Or, run: `php artisan todos-structurizer:collect --category=some-todo-category-name > result_todos_structurized.log`
 
 ### Test running
 
 - `vendor/bin/phpunit tests/Commands/TodosStructurizerCommandTest.php`
+
+### todo
+
+- live test
+- fix and finish unit tests
+- maybe code refactoring
+- readable readme
+- add priority property to the command for filtering by priority
