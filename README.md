@@ -21,5 +21,10 @@ lot of unstructured todos. And I found a way to do todos structured, this format
 todo
 
 - live test
-- unit tests
+- fix and finish unit tests
 - readable readme
+-
+
+### Test running
+
+- `vendor/bin/phpunit tests/Commands/TodosStructurizerCommandTest.php`
