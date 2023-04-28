@@ -88,7 +88,9 @@ final class TodosStructurizerCommand extends Command
                 'Category',
             ], $outputTableData3);
 
+            $this->line('');
             $this->line(sprintf('Total todos categories: %s', count($outputTableData3)));
+            $this->line('');
         }
 
         // Filtering all structured todos by category.
@@ -127,7 +129,10 @@ final class TodosStructurizerCommand extends Command
             'Line number',
             'File path',
         ], $outputTableData);
+
+        $this->line('');
         $this->line(sprintf('Total structured todos: %s', count($outputTableData)));
+        $this->line('');
 
         //-------------------------------------------------------------------------------------------------------------
 
@@ -154,7 +159,9 @@ final class TodosStructurizerCommand extends Command
             'File path',
         ], $outputTableData2);
 
+        $this->line('');
         $this->line(sprintf('Total unstructured todos: %s', count($outputTableData2)));
+        $this->line('');
 
         return Command::SUCCESS;
     }
