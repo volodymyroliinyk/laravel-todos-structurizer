@@ -3,6 +3,7 @@
 namespace VolodymyrOliinyk\TodosStructurizer\Commands;
 
 use Illuminate\Console\Command;
+use VolodymyrOliinyk\TodosStructurizer\Exceptions\TodosStructurizerException;
 
 /**
  * @pattern (JetBrains PhpStorm) \bTODO\:((.|\n)*)\:ENDTODO\b*
@@ -16,7 +17,8 @@ final class TodosStructurizerCommand extends Command
      * @var string
      */
     protected $signature = 'todos-structurizer:collect ' .
-    '{--category= : task category name}  ';
+    '{--category= : task category name} ' .
+    '{--priority= : task priority name: high|medium|low} ';
 
     // Pattern without category, priority.
     const PATTERN_1 = '/(TODO\:([\S\s]*?)\:ENDTODO)+/sm';
@@ -24,7 +26,14 @@ final class TodosStructurizerCommand extends Command
     // Pattern with category, priority.
     const PATTERN_2 = '/(TODO\:\[(.*?)\]\:([\S\s]*?)\:ENDTODO)+/sm';
 
+    // Width of table column with main td string.
     const TODO_COLUMN_WIDTH = 80;
+
+    const PRIORITIES = [
+        'high',
+        'medium',
+        'low',
+    ];
 
     /**
      * The console command description.
@@ -43,6 +52,13 @@ final class TodosStructurizerCommand extends Command
         $this->line('');
 
         $category = $this->option('category');
+        $priority = $this->option('priority');
+
+        if (!empty($priority)) {
+            if (!in_array($priority, self::PRIORITIES)) {
+                throw new TodosStructurizerException('Error. Priority isn\'t allowed.', 500);
+            }
+        }
 
         $basePathDirectory = base_path();
 
@@ -73,6 +89,7 @@ final class TodosStructurizerCommand extends Command
                     $outputTableData
                 );
             }
+
             unset($matches);
         }
 
@@ -100,9 +117,12 @@ final class TodosStructurizerCommand extends Command
             });
         }
 
-        /* TODO:[todos-structurizer]:
-        Filter output by priority.
-        :ENDTODO */
+        // Filtering all structured todos by priority.
+        if (!empty($priority)) {
+            $outputTableData = array_filter($outputTableData, function ($var) use ($priority) {
+                return ($var[1] == $priority);
+            });
+        }
 
         // Sorting by multiple columns.
         $sort = [];
@@ -254,6 +274,10 @@ final class TodosStructurizerCommand extends Command
         return $results;
     }
 
+    /* TODO:[todos-structurizer]:
+       - Is it possible make this method shorter and less arguments.
+     :ENDTODO */
+
     /**
      * @param array $matches
      * @param string $fileContent
@@ -332,6 +356,11 @@ final class TodosStructurizerCommand extends Command
                 'todo_string' => $todoContentString,
             ];
 
+            /* TODO:[todos-structurizer]:
+                - rename variable
+                - string keys for array elements for additional stability
+              :ENDTODO */
+
             $outputTableData[] = [
                 $metadataCategory,
                 $metadataPriority,
@@ -342,6 +371,10 @@ final class TodosStructurizerCommand extends Command
             ];
         }
     }
+
+    /* TODO:[todos-structurizer]:
+       - Is it possible make this method shorter and less arguments.
+     :ENDTODO */
 
     /**
      * @param array $matches
@@ -391,6 +424,11 @@ final class TodosStructurizerCommand extends Command
                 ],
                 'todo_string' => $todoContentString,
             ];
+
+            /* TODO:[todos-structurizer]:
+               - rename variable
+               - string keys for array elements for additional stability
+             :ENDTODO */
 
             $outputTableData2[] = [
                 $todoContentString,
