@@ -127,9 +127,9 @@ final class TodosStructurizerCommand extends Command
         // Sorting by multiple columns.
         $sort = [];
         foreach ($outputTableData as $k => $v) {
-            $sort['category'][$k] = $v[0];
-            $sort['priority'][$k] = $v[1];
-            $sort['todo'][$k] = $v[3];
+            $sort['category'][$k] = $v['category'];
+            $sort['priority'][$k] = $v['priority'];
+            $sort['todo_content'][$k] = $v['todo_content'];
         }
 
         array_multisort(
@@ -137,7 +137,7 @@ final class TodosStructurizerCommand extends Command
             SORT_ASC,
             $sort['priority'],
             SORT_ASC,
-            $sort['todo'],
+            $sort['todo_content'],
             SORT_ASC,
             $outputTableData);
 
