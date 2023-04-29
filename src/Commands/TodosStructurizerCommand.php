@@ -64,11 +64,9 @@ final class TodosStructurizerCommand extends Command
 
         $filesCollected = $this->collectingFiles($this->getDirectories());
 
-        /**
-         * Collecting structured todos.
-         */
+        // Collecting structured todos.
+
         $hashesOfStructuredTodos = [];
-        $todosWithStructure = [];
         $outputTableData = [];
         $todosCategories = [];
 
@@ -85,7 +83,6 @@ final class TodosStructurizerCommand extends Command
                     $file,
                     $todosCategories,
                     $hashesOfStructuredTodos,
-                    $todosWithStructure,
                     $outputTableData
                 );
             }
@@ -176,7 +173,7 @@ final class TodosStructurizerCommand extends Command
         //-------------------------------------------------------------------------------------------------------------
 
         // Collecting unstructured todos.
-        $todosWithoutStructure = [];
+
         $outputTableData2 = [];
 
         foreach ($filesCollected as $file) {
@@ -186,7 +183,7 @@ final class TodosStructurizerCommand extends Command
 
             if (!empty($matches[0])) {
                 $this->loopUnstructuredTodos($matches, $fileContent, $file, $hashesOfStructuredTodos,
-                    $basePathDirectory, $todosWithoutStructure, $outputTableData2);
+                    $basePathDirectory, $outputTableData2);
             }
         }
 
@@ -323,7 +320,6 @@ final class TodosStructurizerCommand extends Command
      * @param string $file
      * @param array $todosCategories
      * @param array $hashesOfStructuredTodos
-     * @param array $todosWithStructure
      * @param array $outputTableData
      * @return void
      */
@@ -334,7 +330,6 @@ final class TodosStructurizerCommand extends Command
         string $file,
         array  &$todosCategories = [],
         array  &$hashesOfStructuredTodos = [],
-        array  &$todosWithStructure = [],
         array  &$outputTableData = []
     )
     {
@@ -378,18 +373,6 @@ final class TodosStructurizerCommand extends Command
             $hash = hash('sha256', sprintf('%s%s', $file, $fileLineNumber));
             $hashesOfStructuredTodos[] = $hash;
 
-            $todosWithStructure[] = [
-                'hash' => $hash,
-                'file_path' => str_replace($basePathDirectory, '', $file),
-                'line_number' => $fileLineNumber,
-                'metadata_parts' => $metadataParts,
-                'metadata' => [
-                    'category' => $metadataCategory,
-                    'priority' => $metadataPriority,
-                ],
-                'todo_content' => $todoContent,
-            ];
-
             $outputTableData[] = [
                 'category' => $metadataCategory,
                 'property' => $metadataPriority,
@@ -410,7 +393,6 @@ final class TodosStructurizerCommand extends Command
      * @param string $file
      * @param array $hashesOfStructuredTodos
      * @param string $basePathDirectory
-     * @param array $todosWithoutStructure
      * @param array $outputTableData2
      * @return void
      */
@@ -420,7 +402,6 @@ final class TodosStructurizerCommand extends Command
         string $file,
         array $hashesOfStructuredTodos,
         string $basePathDirectory,
-        array &$todosWithoutStructure = [],
         array &$outputTableData2 = []
     ) {
         $matchesCount = count($matches[0]);
@@ -434,17 +415,6 @@ final class TodosStructurizerCommand extends Command
             }
 
             $todoContent = $this->todoContentStringPrepareForTable($matches[2][$mc][0]);
-
-            $todosWithoutStructure[] = [
-                'hash' => $hash,
-                'file_path' => str_replace($basePathDirectory, '', $file),
-                'line_number' => $fileLineNumber,
-                'metadata_parts' => null,
-                'metadata' => [
-                    'category' => null,
-                ],
-                'todo_content' => $todoContent,
-            ];
 
             $outputTableData2[] = [
                 'todo_content' => $todoContent,
