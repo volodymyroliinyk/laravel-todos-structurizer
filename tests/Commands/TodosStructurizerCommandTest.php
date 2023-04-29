@@ -3,7 +3,8 @@
 namespace VolodymyrOliinyk\TodosStructurizer\Tests\Commands;
 
 use Illuminate\Support\Facades\Artisan;
-use PHPUnit\Framework\TestCase;
+use VolodymyrOliinyk\TodosStructurizer\Tests\TestCase;
+
 
 /**
  * @group todos-structurizer-command-test
@@ -24,5 +25,6 @@ final class TodosStructurizerCommandTest extends TestCase
     RuntimeException: A facade root has not been set.
          :ENDTODO*/
         Artisan::call('todos-structurizer:collect')->assertExitCode(0);
+//        $this->artisan('todos-structurizer:collect')->assertExitCode(0);
     }
 }
