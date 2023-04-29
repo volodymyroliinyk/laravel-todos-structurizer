@@ -187,12 +187,24 @@ final class TodosStructurizerCommand extends Command
             }
         }
 
+        $i = 1;
+        foreach ($outputTableData2 as $k => $v) {
+            $outputTableData2[$k] = [
+                'N' => $i,
+                'todo_content' => $v['todo_content'],
+                'file_line_number' => $v['file_line_number'],
+                'file_path' => $v['file_path'],
+            ];
+            $i++;
+        }
+
         // Final output.
         $this->table([
+            'N',
             'Todo',
             'Line number',
             'File path',
-        ], array_values($outputTableData2));
+        ], $outputTableData2);
 
         $this->line('');
         $this->line(sprintf('Total unstructured todos: %s', count($outputTableData2)));
@@ -200,26 +212,6 @@ final class TodosStructurizerCommand extends Command
 
         return Command::SUCCESS;
     }
-
-//    private function multisortForTable(array $outputTableData){
-//        // Sorting by multiple columns.
-//        $sort = [];
-//
-//        foreach ($outputTableData as $k => $v) {
-//            $sort['category'][$k] = $v['category']??null;
-//            $sort['priority'][$k] = $v['priority']??null;
-//            $sort['todo_content'][$k] = $v['todo_content'];
-//        }
-//
-//        array_multisort(
-//            $sort['category'],
-//            SORT_ASC,
-//            $sort['priority'],
-//            SORT_ASC,
-//            $sort['todo_content'],
-//            SORT_ASC,
-//            $outputTableData);
-//    }
 
     /**
      * Collecting all files from directories.
@@ -289,7 +281,7 @@ final class TodosStructurizerCommand extends Command
      *
      * @param string $dir
      * @param array $results
-     * @return array|mixed
+     * @return array
      */
     private function getDirFiles(string $dir, array &$results = []): array
     {
@@ -334,6 +326,7 @@ final class TodosStructurizerCommand extends Command
     )
     {
         $matchesCount = count($matches[0]);
+
         for ($mc = 0; $mc < $matchesCount; $mc++) {
             $fileLineNumber = substr_count(mb_substr($fileContent, 0, $matches[0][$mc][1]), PHP_EOL) + 1;
             $metadata = $matches[2][$mc][0];
@@ -347,12 +340,7 @@ final class TodosStructurizerCommand extends Command
             }
 
             $metadataParts = explode('|', $metadata);
-
-            if (strpos($metadata, '|') !== false) {
-                $metadataCategory = $metadataParts[0];
-            } else {
-                $metadataCategory = $metadataParts[0];
-            }
+            $metadataCategory = $metadataParts[0];
 
             if ($metadataCategory == '') {
                 $metadataCategory = '-';
