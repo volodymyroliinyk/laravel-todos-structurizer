@@ -45,7 +45,7 @@ final class TodosStructurizerCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
         $this->line('');
         $this->line($this->description);
@@ -73,6 +73,10 @@ final class TodosStructurizerCommand extends Command
         foreach ($filesCollected as $file) {
             $fileContent = file_get_contents($file);
 
+            if (empty($fileContent)) {
+                continue;
+            }
+
             preg_match_all(self::PATTERN_2, $fileContent, $matches, PREG_OFFSET_CAPTURE);
 
             if (!empty($matches[0])) {
@@ -93,6 +97,8 @@ final class TodosStructurizerCommand extends Command
         // Categories table.
         if (!empty($todosCategories)) {
             asort($todosCategories);
+
+            $outputTableData3 = [];
 
             foreach ($todosCategories as $todoCategory) {
                 $outputTableData3[] = [$todoCategory];
@@ -178,6 +184,10 @@ final class TodosStructurizerCommand extends Command
 
         foreach ($filesCollected as $file) {
             $fileContent = file_get_contents($file);
+
+            if (empty($fileContent)) {
+                continue;
+            }
 
             preg_match_all(self::PATTERN_1, $fileContent, $matches, PREG_OFFSET_CAPTURE);
 
@@ -287,17 +297,23 @@ final class TodosStructurizerCommand extends Command
     {
         $files = scandir($dir);
 
-        foreach ($files as $key => $value) {
-            $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
-            if (!is_dir($path)) {
-                $results[] = $path;
-            } elseif ($value != "." && $value != "..") {
-                if (!in_array($path, $this->getDirectoriesIgnored())) {
-                    $this->getDirFiles($path, $results);
+        if (!empty($files)) {
+            foreach ($files as $key => $value) {
+                $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
+
+                if (empty($path)) {
+                    continue;
+                }
+
+                if (!is_dir($path)) {
+                    $results[] = $path;
+                } elseif ($value != "." && $value != "..") {
+                    if (!in_array($path, $this->getDirectoriesIgnored())) {
+                        $this->getDirFiles($path, $results);
+                    }
                 }
             }
         }
-
         return $results;
     }
 

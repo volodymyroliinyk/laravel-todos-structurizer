@@ -1,7 +1,5 @@
 # Laravel Structurized Todos
 
-## Attention. Not stable. In development.
-
 ### About
 
 Command helps use and structurize a lot of todos with next syntax:
@@ -28,9 +26,10 @@ lot of unstructured todos. And I found a way to do todos structured, this format
 
 ### Test running
 
-- `vendor/bin/phpunit tests/Commands/TodosStructurizerCommandTest.php`
+- `vendor/bin/phpunit tests/Commands/TodosStructurizerCommandTest.php` (need to fix)
+- `vendor/bin/phpstan`
 
 ### todo
 
-- fix and finish unittests, error during test running.
+- fix and finish phpnit tests, error during test running.
 - code refactoring
