@@ -24,10 +24,11 @@ lot of unstructured todos. And I found a way to do todos structured, this format
   Available priorities: `high`,`medium`,`low`)
 - For JetBrains PhpStorm, for correct highlighting add pattern to TODO filter: `\bTODO\:((.|\n)*)\:ENDTODO\b*`
 
-### Test running
+### Development
 
-- `vendor/bin/phpunit tests/Commands/TodosStructurizerCommandTest.php` (need to fix)
-- `vendor/bin/phpstan`
+- Run: `vendor/bin/phpstan`
+- Run: `vendor/bin/phpcbf`
+- Run: `vendor/bin/phpunit tests/Commands/TodosStructurizerCommandTest.php` (need to fix)
 
 ### todo
 
