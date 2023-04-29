@@ -64,11 +64,9 @@ final class TodosStructurizerCommand extends Command
 
         $filesCollected = $this->collectingFiles($this->getDirectories());
 
-        /**
-         * Collecting structured todos.
-         */
+        // Collecting structured todos.
+
         $hashesOfStructuredTodos = [];
-        $todosWithStructure = [];
         $outputTableData = [];
         $todosCategories = [];
 
@@ -85,7 +83,6 @@ final class TodosStructurizerCommand extends Command
                     $file,
                     $todosCategories,
                     $hashesOfStructuredTodos,
-                    $todosWithStructure,
                     $outputTableData
                 );
             }
@@ -176,7 +173,7 @@ final class TodosStructurizerCommand extends Command
         //-------------------------------------------------------------------------------------------------------------
 
         // Collecting unstructured todos.
-        $todosWithoutStructure = [];
+
         $outputTableData2 = [];
 
         foreach ($filesCollected as $file) {
@@ -186,16 +183,28 @@ final class TodosStructurizerCommand extends Command
 
             if (!empty($matches[0])) {
                 $this->loopUnstructuredTodos($matches, $fileContent, $file, $hashesOfStructuredTodos,
-                    $basePathDirectory, $todosWithoutStructure, $outputTableData2);
+                    $basePathDirectory, $outputTableData2);
             }
+        }
+
+        $i = 1;
+        foreach ($outputTableData2 as $k => $v) {
+            $outputTableData2[$k] = [
+                'N' => $i,
+                'todo_content' => $v['todo_content'],
+                'file_line_number' => $v['file_line_number'],
+                'file_path' => $v['file_path'],
+            ];
+            $i++;
         }
 
         // Final output.
         $this->table([
+            'N',
             'Todo',
             'Line number',
             'File path',
-        ], array_values($outputTableData2));
+        ], $outputTableData2);
 
         $this->line('');
         $this->line(sprintf('Total unstructured todos: %s', count($outputTableData2)));
@@ -203,26 +212,6 @@ final class TodosStructurizerCommand extends Command
 
         return Command::SUCCESS;
     }
-
-//    private function multisortForTable(array $outputTableData){
-//        // Sorting by multiple columns.
-//        $sort = [];
-//
-//        foreach ($outputTableData as $k => $v) {
-//            $sort['category'][$k] = $v['category']??null;
-//            $sort['priority'][$k] = $v['priority']??null;
-//            $sort['todo_content'][$k] = $v['todo_content'];
-//        }
-//
-//        array_multisort(
-//            $sort['category'],
-//            SORT_ASC,
-//            $sort['priority'],
-//            SORT_ASC,
-//            $sort['todo_content'],
-//            SORT_ASC,
-//            $outputTableData);
-//    }
 
     /**
      * Collecting all files from directories.
@@ -292,9 +281,9 @@ final class TodosStructurizerCommand extends Command
      *
      * @param string $dir
      * @param array $results
-     * @return array|mixed
+     * @return array
      */
-    private function getDirFiles(string $dir, array &$results = [])
+    private function getDirFiles(string $dir, array &$results = []): array
     {
         $files = scandir($dir);
 
@@ -323,7 +312,6 @@ final class TodosStructurizerCommand extends Command
      * @param string $file
      * @param array $todosCategories
      * @param array $hashesOfStructuredTodos
-     * @param array $todosWithStructure
      * @param array $outputTableData
      * @return void
      */
@@ -334,11 +322,11 @@ final class TodosStructurizerCommand extends Command
         string $file,
         array  &$todosCategories = [],
         array  &$hashesOfStructuredTodos = [],
-        array  &$todosWithStructure = [],
         array  &$outputTableData = []
     )
     {
         $matchesCount = count($matches[0]);
+
         for ($mc = 0; $mc < $matchesCount; $mc++) {
             $fileLineNumber = substr_count(mb_substr($fileContent, 0, $matches[0][$mc][1]), PHP_EOL) + 1;
             $metadata = $matches[2][$mc][0];
@@ -352,12 +340,7 @@ final class TodosStructurizerCommand extends Command
             }
 
             $metadataParts = explode('|', $metadata);
-
-            if (strpos($metadata, '|') !== false) {
-                $metadataCategory = $metadataParts[0];
-            } else {
-                $metadataCategory = $metadataParts[0];
-            }
+            $metadataCategory = $metadataParts[0];
 
             if ($metadataCategory == '') {
                 $metadataCategory = '-';
@@ -378,25 +361,7 @@ final class TodosStructurizerCommand extends Command
             $hash = hash('sha256', sprintf('%s%s', $file, $fileLineNumber));
             $hashesOfStructuredTodos[] = $hash;
 
-            $todosWithStructure[] = [
-                'hash' => $hash,
-                'file_path' => str_replace($basePathDirectory, '', $file),
-                'line_number' => $fileLineNumber,
-                'metadata_parts' => $metadataParts,
-                'metadata' => [
-                    'category' => $metadataCategory,
-                    'priority' => $metadataPriority,
-                ],
-                'todo_content' => $todoContent,
-            ];
-
-            /* TODO:[todos-structurizer]:
-                - rename variable
-                - string keys for array elements for additional stability
-              :ENDTODO */
-
             $outputTableData[] = [
-//                'N' => count($outputTableData),
                 'category' => $metadataCategory,
                 'property' => $metadataPriority,
                 'todo_content' => $todoContent,
@@ -416,7 +381,6 @@ final class TodosStructurizerCommand extends Command
      * @param string $file
      * @param array $hashesOfStructuredTodos
      * @param string $basePathDirectory
-     * @param array $todosWithoutStructure
      * @param array $outputTableData2
      * @return void
      */
@@ -426,7 +390,6 @@ final class TodosStructurizerCommand extends Command
         string $file,
         array $hashesOfStructuredTodos,
         string $basePathDirectory,
-        array &$todosWithoutStructure = [],
         array &$outputTableData2 = []
     ) {
         $matchesCount = count($matches[0]);
@@ -440,22 +403,6 @@ final class TodosStructurizerCommand extends Command
             }
 
             $todoContent = $this->todoContentStringPrepareForTable($matches[2][$mc][0]);
-
-            $todosWithoutStructure[] = [
-                'hash' => $hash,
-                'file_path' => str_replace($basePathDirectory, '', $file),
-                'line_number' => $fileLineNumber,
-                'metadata_parts' => null,
-                'metadata' => [
-                    'category' => null,
-                ],
-                'todo_content' => $todoContent,
-            ];
-
-            /* TODO:[todos-structurizer]:
-               - rename variable
-               - string keys for array elements for additional stability
-             :ENDTODO */
 
             $outputTableData2[] = [
                 'todo_content' => $todoContent,
