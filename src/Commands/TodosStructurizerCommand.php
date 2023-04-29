@@ -110,6 +110,10 @@ final class TodosStructurizerCommand extends Command
             $this->line('');
         }
 
+        if (empty($outputTableData)) {
+            $this->line('No structurized todos.');
+        }
+
         // Filtering all structured todos by category.
         if (!empty($category)) {
             $outputTableData = array_filter($outputTableData, function ($var) use ($category) {
@@ -127,8 +131,8 @@ final class TodosStructurizerCommand extends Command
         // Sorting by multiple columns.
         $sort = [];
         foreach ($outputTableData as $k => $v) {
-            $sort['category'][$k] = $v['category'];
-            $sort['priority'][$k] = $v['priority'];
+            $sort['category'][$k] = $v['category'] ?? null;
+            $sort['priority'][$k] = $v['priority'] ?? null;
             $sort['todo_content'][$k] = $v['todo_content'];
         }
 
@@ -139,16 +143,31 @@ final class TodosStructurizerCommand extends Command
             SORT_ASC,
             $sort['todo_content'],
             SORT_ASC,
-            $outputTableData);
+            $outputTableData
+        );
+
+        $i = 1;
+        foreach ($outputTableData as $k => $v) {
+            $outputTableData[$k] = [
+                'N' => $i,
+                'category' => $v['category'],
+                'property' => $v['property'],
+                'todo_content' => $v['todo_content'],
+                'file_line_number' => $v['file_line_number'],
+                'file_path' => $v['file_path'],
+            ];
+            $i++;
+        }
 
         // Collected todos table.
         $this->table([
-            'Category',
-            'Priority',
-            'Todo',
-            'Line number',
-            'File path',
-        ], array_values($outputTableData));
+            'N' => 'N',
+            'category' => 'Category',
+            'property' => 'Priority',
+            'todo_content' => 'Todo',
+            'file_line_number' => 'Line number',
+            'file_path' => 'File path',
+        ], $outputTableData);
 
         $this->line('');
         $this->line(sprintf('Total structured todos: %s', count($outputTableData)));
@@ -184,6 +203,26 @@ final class TodosStructurizerCommand extends Command
 
         return Command::SUCCESS;
     }
+
+//    private function multisortForTable(array $outputTableData){
+//        // Sorting by multiple columns.
+//        $sort = [];
+//
+//        foreach ($outputTableData as $k => $v) {
+//            $sort['category'][$k] = $v['category']??null;
+//            $sort['priority'][$k] = $v['priority']??null;
+//            $sort['todo_content'][$k] = $v['todo_content'];
+//        }
+//
+//        array_multisort(
+//            $sort['category'],
+//            SORT_ASC,
+//            $sort['priority'],
+//            SORT_ASC,
+//            $sort['todo_content'],
+//            SORT_ASC,
+//            $outputTableData);
+//    }
 
     /**
      * Collecting all files from directories.
@@ -357,6 +396,7 @@ final class TodosStructurizerCommand extends Command
               :ENDTODO */
 
             $outputTableData[] = [
+//                'N' => count($outputTableData),
                 'category' => $metadataCategory,
                 'property' => $metadataPriority,
                 'todo_content' => $todoContent,
