@@ -19,12 +19,38 @@ final class TodosStructurizerCommandTest extends TestCase
      */
     public function test_console_command(): void
     {
-        /*TODO:[cat]:
+        /*TODO:[todos-structurizer]:
             fix tests configuration, because some error:
-            1) VolodymyrOliinyk\TodosStructurizer\Tests\Commands\TodosStructurizerCommandTest::test_console_command
-    RuntimeException: A facade root has not been set.
+            1) Error: Call to undefined method Illuminate\Container\Container::basePath()
          :ENDTODO*/
         Artisan::call('todos-structurizer:collect')->assertExitCode(0);
 //        $this->artisan('todos-structurizer:collect')->assertExitCode(0);
+
+        /*TODO:[todos-structurizer-demo|priority:high]:
+            demo 1
+         :ENDTODO*/
+
+        /*TODO:[todos-structurizer-demo|priority:high]:
+           demo 12
+        :ENDTODO*/
+
+
+        /*TODO:[todos-structurizer-demo|priority:medium]:
+            demo 2
+           demo21
+         :ENDTODO*/
+
+        /*TODO:[todos-structurizer-demo|priority:medium]:
+         demo 3
+      :ENDTODO*/
+
+        /*TODO:[todos-structurizer-demo|priority:low]:
+       demo 4
+    :ENDTODO*/
+
+        /*TODO:[todos-structurizer-demo|priority:low]:
+     demo 5
+  :ENDTODO*/
+
     }
 }
