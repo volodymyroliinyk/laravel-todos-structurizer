@@ -195,8 +195,14 @@ final class TodosStructurizerCommand extends Command
             preg_match_all(self::PATTERN_1, $fileContent, $matches, PREG_OFFSET_CAPTURE);
 
             if (!empty($matches[0])) {
-                $this->loopUnstructuredTodos($matches, $fileContent, $file, $hashesOfStructuredTodos,
-                    $basePathDirectory, $outputTableData2);
+                $this->loopUnstructuredTodos(
+                    $matches,
+                    $fileContent,
+                    $file,
+                    $hashesOfStructuredTodos,
+                    $basePathDirectory,
+                    $outputTableData2
+                );
             }
         }
 
@@ -335,15 +341,14 @@ final class TodosStructurizerCommand extends Command
      * @return void
      */
     private function loopStructuredTodos(
-        array  $matches,
+        array $matches,
         string $fileContent,
         string $basePathDirectory,
         string $file,
-        array  &$todosCategories = [],
-        array  &$hashesOfStructuredTodos = [],
-        array  &$outputTableData = []
-    )
-    {
+        array &$todosCategories = [],
+        array &$hashesOfStructuredTodos = [],
+        array &$outputTableData = []
+    ) {
         $matchesCount = count($matches[0]);
 
         for ($mc = 0; $mc < $matchesCount; $mc++) {
