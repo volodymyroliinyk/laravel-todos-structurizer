@@ -22,6 +22,9 @@ return [
         'routes',
         'tests',
 
+        /* TODO:[todos-structurizer]:
+           - bug: folder inside ignored folder ignored too, need provide exclusion rules.
+         :ENDTODO */
         // For testing or demonstration.
         'vendor/volodymyroliinyk/laravel-todos-structurizer',
     ],
@@ -44,5 +47,9 @@ return [
         '.git',
         '.idea',
     ],
+
+    /*TODO:[todos-structurizer]:
+     - dinamic custom properties feature.
+     :ENDTODO*/
 
 ];

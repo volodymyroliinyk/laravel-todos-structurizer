@@ -145,11 +145,10 @@ final class TodosStructurizerCommand extends Command
         $this->table([
             'Category',
             'Priority',
-            'Metadata string',
             'Todo',
             'Line number',
             'File path',
-        ], $outputTableData);
+        ], array_values($outputTableData));
 
         $this->line('');
         $this->line(sprintf('Total structured todos: %s', count($outputTableData)));
@@ -177,7 +176,7 @@ final class TodosStructurizerCommand extends Command
             'Todo',
             'Line number',
             'File path',
-        ], $outputTableData2);
+        ], array_values($outputTableData2));
 
         $this->line('');
         $this->line(sprintf('Total unstructured todos: %s', count($outputTableData2)));
@@ -303,34 +302,34 @@ final class TodosStructurizerCommand extends Command
         $matchesCount = count($matches[0]);
         for ($mc = 0; $mc < $matchesCount; $mc++) {
             $fileLineNumber = substr_count(mb_substr($fileContent, 0, $matches[0][$mc][1]), PHP_EOL) + 1;
-            $todoMetadataString = $matches[2][$mc][0];
+            $metadata = $matches[2][$mc][0];
 
-            $todoContentString = $this->todoContentStringPrepareForTable($matches[3][$mc][0]);
+            $todoContent = $this->todoContentStringPrepareForTable($matches[3][$mc][0]);
 
-            $metadataPriority = '? PRIORITY ?';
+            $metadataPriority = '-';
 
-            if ($todoMetadataString == '') {
-                $todoMetadataString = '? METADATA ?';
+            if ($metadata == '') {
+                $metadata = '-';
             }
 
-            $todoMetadataStringParts = explode('|', $todoMetadataString);
+            $metadataParts = explode('|', $metadata);
 
-            if (strpos($todoMetadataString, '|') !== false) {
-                $metadataCategory = $todoMetadataStringParts[0];
+            if (strpos($metadata, '|') !== false) {
+                $metadataCategory = $metadataParts[0];
             } else {
-                $metadataCategory = $todoMetadataStringParts[0];
+                $metadataCategory = $metadataParts[0];
             }
 
             if ($metadataCategory == '') {
-                $metadataCategory = '? CATEGORY ?';
+                $metadataCategory = '-';
             }
 
             if (!in_array($metadataCategory, $todosCategories)) {
                 $todosCategories[] = $metadataCategory;
             }
 
-            if (!empty($todoMetadataStringParts[1])) {
-                $metadataPriorityParts = explode(':', $todoMetadataStringParts[1]);
+            if (!empty($metadataParts[1])) {
+                $metadataPriorityParts = explode(':', $metadataParts[1]);
 
                 if (!empty($metadataPriorityParts[1])) {
                     $metadataPriority = $metadataPriorityParts[1];
@@ -344,13 +343,12 @@ final class TodosStructurizerCommand extends Command
                 'hash' => $hash,
                 'file_path' => str_replace($basePathDirectory, '', $file),
                 'line_number' => $fileLineNumber,
-                'metadata_string' => $todoMetadataString,
-                'metadata_string_parts' => $todoMetadataStringParts,
+                'metadata_parts' => $metadataParts,
                 'metadata' => [
                     'category' => $metadataCategory,
                     'priority' => $metadataPriority,
                 ],
-                'todo_string' => $todoContentString,
+                'todo_content' => $todoContent,
             ];
 
             /* TODO:[todos-structurizer]:
@@ -359,12 +357,11 @@ final class TodosStructurizerCommand extends Command
               :ENDTODO */
 
             $outputTableData[] = [
-                $metadataCategory,
-                $metadataPriority,
-                $todoMetadataString,
-                $todoContentString,
-                $fileLineNumber,
-                str_replace($basePathDirectory, '', $file)
+                'category' => $metadataCategory,
+                'property' => $metadataPriority,
+                'todo_content' => $todoContent,
+                'file_line_number' => $fileLineNumber,
+                'file_path' => str_replace($basePathDirectory, '', $file),
             ];
         }
     }
@@ -402,18 +399,17 @@ final class TodosStructurizerCommand extends Command
                 continue;
             }
 
-            $todoContentString = $this->todoContentStringPrepareForTable($matches[2][$mc][0]);
+            $todoContent = $this->todoContentStringPrepareForTable($matches[2][$mc][0]);
 
             $todosWithoutStructure[] = [
                 'hash' => $hash,
                 'file_path' => str_replace($basePathDirectory, '', $file),
                 'line_number' => $fileLineNumber,
-                'metadata_string' => null,
-                'metadata_string_parts' => null,
+                'metadata_parts' => null,
                 'metadata' => [
                     'category' => null,
                 ],
-                'todo_string' => $todoContentString,
+                'todo_content' => $todoContent,
             ];
 
             /* TODO:[todos-structurizer]:
@@ -422,26 +418,26 @@ final class TodosStructurizerCommand extends Command
              :ENDTODO */
 
             $outputTableData2[] = [
-                $todoContentString,
-                $fileLineNumber,
-                str_replace($basePathDirectory, '', $file)
+                'todo_content' => $todoContent,
+                'file_line_number' => $fileLineNumber,
+                'file_path' => str_replace($basePathDirectory, '', $file),
             ];
         }
     }
 
     /**
-     * @param string $todoContentString
+     * @param string $todoContent
      * @return string
      */
-    private function todoContentStringPrepareForTable(string $todoContentString): string
+    private function todoContentStringPrepareForTable(string $todoContent): string
     {
-        $todoContentString = trim($todoContentString);
-        $todoContentString = str_replace(['//', '     ', '    ', '   ', '  '], ' ', $todoContentString);
+        $todoContent = trim($todoContent);
+        $todoContent = str_replace(['//', '     ', '    ', '   ', '  '], ' ', $todoContent);
 
-        if (mb_strlen($todoContentString) > 100) {
-            $todoContentString = wordwrap($todoContentString, self::TODO_COLUMN_WIDTH, "\n");
+        if (mb_strlen($todoContent) > 100) {
+            $todoContent = wordwrap($todoContent, self::TODO_COLUMN_WIDTH, "\n");
         }
 
-        return $todoContentString;
+        return $todoContent;
     }
 }
