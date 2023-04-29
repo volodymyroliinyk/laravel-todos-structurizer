@@ -291,7 +291,7 @@ final class TodosStructurizerCommand extends Command
      * @param array $results
      * @return array|mixed
      */
-    private function getDirFiles(string $dir, array &$results = [])
+    private function getDirFiles(string $dir, array &$results = []): array
     {
         $files = scandir($dir);
 
