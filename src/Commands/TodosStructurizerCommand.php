@@ -151,7 +151,6 @@ final class TodosStructurizerCommand extends Command
             );
         }
 
-
         $i = 1;
         foreach ($outputTableData as $k => $v) {
             $outputTableData[$k] = [
