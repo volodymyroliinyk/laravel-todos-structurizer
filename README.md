@@ -22,7 +22,8 @@ lot of unstructured todos. And I found a way to do todos structured, this format
 - Run: `php artisan todos-structurizer:collect > result_todos_structurized.log`
 - Or, run: `php artisan todos-structurizer:collect --category=some-todo-category-name > result_todos_structurized.log`
 - Or,
-  run: `php artisan todos-structurizer:collect --category=some-todo-category-name --priority=high > result_todos_structurized.log`
+  run: `php artisan todos-structurizer:collect --category=some-todo-category-name --priority=high > result_todos_structurized.log` (
+  Available priorities: `high`,`medium`,`low`)
 - For JetBrains PhpStorm, for correct highlighting add pattern to TODO filter: `\bTODO\:((.|\n)*)\:ENDTODO\b*`
 
 ### Test running
