@@ -139,15 +139,18 @@ final class TodosStructurizerCommand extends Command
             $sort['todo_content'][$k] = $v['todo_content'];
         }
 
-        array_multisort(
-            $sort['category'],
-            SORT_ASC,
-            $sort['priority'],
-            SORT_ASC,
-            $sort['todo_content'],
-            SORT_ASC,
-            $outputTableData
-        );
+        if (!empty($sort)) {
+            array_multisort(
+                $sort['category'],
+                SORT_ASC,
+                $sort['priority'],
+                SORT_ASC,
+                $sort['todo_content'],
+                SORT_ASC,
+                $outputTableData
+            );
+        }
+
 
         $i = 1;
         foreach ($outputTableData as $k => $v) {
