@@ -390,13 +390,7 @@ final class TodosStructurizerCommand extends Command
                 'todo_content' => $todoContent,
             ];
 
-            /* TODO:[todos-structurizer]:
-                - rename variable
-                - string keys for array elements for additional stability
-              :ENDTODO */
-
             $outputTableData[] = [
-//                'N' => count($outputTableData),
                 'category' => $metadataCategory,
                 'property' => $metadataPriority,
                 'todo_content' => $todoContent,
@@ -451,11 +445,6 @@ final class TodosStructurizerCommand extends Command
                 ],
                 'todo_content' => $todoContent,
             ];
-
-            /* TODO:[todos-structurizer]:
-               - rename variable
-               - string keys for array elements for additional stability
-             :ENDTODO */
 
             $outputTableData2[] = [
                 'todo_content' => $todoContent,
