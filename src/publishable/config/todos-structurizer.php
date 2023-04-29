@@ -21,6 +21,9 @@ return [
         'resources/views',
         'routes',
         'tests',
+
+        // For testing or demonstration.
+        'vendor/volodymyroliinyk/laravel-todos-structurizer',
     ],
 
     /*
