@@ -304,16 +304,13 @@ final class TodosStructurizerCommand extends Command
         for ($mc = 0; $mc < $matchesCount; $mc++) {
             $fileLineNumber = substr_count(mb_substr($fileContent, 0, $matches[0][$mc][1]), PHP_EOL) + 1;
             $todoMetadataString = $matches[2][$mc][0];
-            $todoContentString = trim($matches[3][$mc][0]);
-            $todoContentString = str_replace(['//', '     ', '    ', '   ', '  '], ' ', $todoContentString);
+
+            $todoContentString = $this->todoContentStringPrepareForTable($matches[3][$mc][0]);
+
             $metadataPriority = '? PRIORITY ?';
 
             if ($todoMetadataString == '') {
                 $todoMetadataString = '? METADATA ?';
-            }
-
-            if (mb_strlen($todoContentString) > 100) {
-                $todoContentString = wordwrap($todoContentString, self::TODO_COLUMN_WIDTH, "\n");
             }
 
             $todoMetadataStringParts = explode('|', $todoMetadataString);
@@ -405,12 +402,7 @@ final class TodosStructurizerCommand extends Command
                 continue;
             }
 
-            $todoContentString = trim($matches[2][$mc][0]);
-            $todoContentString = str_replace(['//', '     ', '    ', '   ', '  '], ' ', $todoContentString);
-
-            if (mb_strlen($todoContentString) > 100) {
-                $todoContentString = wordwrap($todoContentString, self::TODO_COLUMN_WIDTH, "\n");
-            }
+            $todoContentString = $this->todoContentStringPrepareForTable($matches[2][$mc][0]);
 
             $todosWithoutStructure[] = [
                 'hash' => $hash,
@@ -437,4 +429,19 @@ final class TodosStructurizerCommand extends Command
         }
     }
 
+    /**
+     * @param string $todoContentString
+     * @return string
+     */
+    private function todoContentStringPrepareForTable(string $todoContentString): string
+    {
+        $todoContentString = trim($todoContentString);
+        $todoContentString = str_replace(['//', '     ', '    ', '   ', '  '], ' ', $todoContentString);
+
+        if (mb_strlen($todoContentString) > 100) {
+            $todoContentString = wordwrap($todoContentString, self::TODO_COLUMN_WIDTH, "\n");
+        }
+
+        return $todoContentString;
+    }
 }
