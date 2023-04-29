@@ -144,6 +144,7 @@ final class TodosStructurizerCommand extends Command
         // Collected todos table.
         $this->table([
             'Category',
+            'Priority',
             'Metadata string',
             'Todo',
             'Line number',
@@ -169,7 +170,6 @@ final class TodosStructurizerCommand extends Command
                 $this->loopUnstructuredTodos($matches, $fileContent, $file, $hashesOfStructuredTodos,
                     $basePathDirectory, $todosWithoutStructure, $outputTableData2);
             }
-
         }
 
         // Final output.
@@ -387,17 +387,16 @@ final class TodosStructurizerCommand extends Command
      * @return void
      */
     private function loopUnstructuredTodos(
-        array  $matches,
+        array $matches,
         string $fileContent,
         string $file,
-        array  $hashesOfStructuredTodos,
+        array $hashesOfStructuredTodos,
         string $basePathDirectory,
-        array  &$todosWithoutStructure = [],
-        array  &$outputTableData2 = []
-    )
-    {
-
+        array &$todosWithoutStructure = [],
+        array &$outputTableData2 = []
+    ) {
         $matchesCount = count($matches[0]);
+
         for ($mc = 0; $mc < $matchesCount; $mc++) {
             $fileLineNumber = substr_count(mb_substr($fileContent, 0, $matches[0][$mc][1]), PHP_EOL) + 1;
             $hash = hash('sha256', sprintf('%s%s', $file, $fileLineNumber));
