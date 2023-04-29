@@ -45,7 +45,7 @@ final class TodosStructurizerCommand extends Command
     /**
      * Execute the console command.
      */
-    public function handle()
+    public function handle(): int
     {
         $this->line('');
         $this->line($this->description);
@@ -73,6 +73,10 @@ final class TodosStructurizerCommand extends Command
         foreach ($filesCollected as $file) {
             $fileContent = file_get_contents($file);
 
+            if (empty($fileContent)) {
+                continue;
+            }
+
             preg_match_all(self::PATTERN_2, $fileContent, $matches, PREG_OFFSET_CAPTURE);
 
             if (!empty($matches[0])) {
@@ -93,6 +97,8 @@ final class TodosStructurizerCommand extends Command
         // Categories table.
         if (!empty($todosCategories)) {
             asort($todosCategories);
+
+            $outputTableData3 = [];
 
             foreach ($todosCategories as $todoCategory) {
                 $outputTableData3[] = [$todoCategory];
@@ -133,15 +139,17 @@ final class TodosStructurizerCommand extends Command
             $sort['todo_content'][$k] = $v['todo_content'];
         }
 
-        array_multisort(
-            $sort['category'],
-            SORT_ASC,
-            $sort['priority'],
-            SORT_ASC,
-            $sort['todo_content'],
-            SORT_ASC,
-            $outputTableData
-        );
+        if (!empty($sort)) {
+            array_multisort(
+                $sort['category'],
+                SORT_ASC,
+                $sort['priority'],
+                SORT_ASC,
+                $sort['todo_content'],
+                SORT_ASC,
+                $outputTableData
+            );
+        }
 
         $i = 1;
         foreach ($outputTableData as $k => $v) {
@@ -179,11 +187,21 @@ final class TodosStructurizerCommand extends Command
         foreach ($filesCollected as $file) {
             $fileContent = file_get_contents($file);
 
+            if (empty($fileContent)) {
+                continue;
+            }
+
             preg_match_all(self::PATTERN_1, $fileContent, $matches, PREG_OFFSET_CAPTURE);
 
             if (!empty($matches[0])) {
-                $this->loopUnstructuredTodos($matches, $fileContent, $file, $hashesOfStructuredTodos,
-                    $basePathDirectory, $outputTableData2);
+                $this->loopUnstructuredTodos(
+                    $matches,
+                    $fileContent,
+                    $file,
+                    $hashesOfStructuredTodos,
+                    $basePathDirectory,
+                    $outputTableData2
+                );
             }
         }
 
@@ -287,17 +305,23 @@ final class TodosStructurizerCommand extends Command
     {
         $files = scandir($dir);
 
-        foreach ($files as $key => $value) {
-            $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
-            if (!is_dir($path)) {
-                $results[] = $path;
-            } elseif ($value != "." && $value != "..") {
-                if (!in_array($path, $this->getDirectoriesIgnored())) {
-                    $this->getDirFiles($path, $results);
+        if (!empty($files)) {
+            foreach ($files as $key => $value) {
+                $path = realpath($dir . DIRECTORY_SEPARATOR . $value);
+
+                if (empty($path)) {
+                    continue;
+                }
+
+                if (!is_dir($path)) {
+                    $results[] = $path;
+                } elseif ($value != "." && $value != "..") {
+                    if (!in_array($path, $this->getDirectoriesIgnored())) {
+                        $this->getDirFiles($path, $results);
+                    }
                 }
             }
         }
-
         return $results;
     }
 
@@ -316,15 +340,14 @@ final class TodosStructurizerCommand extends Command
      * @return void
      */
     private function loopStructuredTodos(
-        array  $matches,
+        array $matches,
         string $fileContent,
         string $basePathDirectory,
         string $file,
-        array  &$todosCategories = [],
-        array  &$hashesOfStructuredTodos = [],
-        array  &$outputTableData = []
-    )
-    {
+        array &$todosCategories = [],
+        array &$hashesOfStructuredTodos = [],
+        array &$outputTableData = []
+    ) {
         $matchesCount = count($matches[0]);
 
         for ($mc = 0; $mc < $matchesCount; $mc++) {

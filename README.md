@@ -1,7 +1,5 @@
 # Laravel Structurized Todos
 
-## Attention. Not stable. In development.
-
 ### About
 
 Command helps use and structurize a lot of todos with next syntax:
@@ -26,11 +24,13 @@ lot of unstructured todos. And I found a way to do todos structured, this format
   Available priorities: `high`,`medium`,`low`)
 - For JetBrains PhpStorm, for correct highlighting add pattern to TODO filter: `\bTODO\:((.|\n)*)\:ENDTODO\b*`
 
-### Test running
+### Development
 
-- `vendor/bin/phpunit tests/Commands/TodosStructurizerCommandTest.php`
+- Run: `vendor/bin/phpstan`
+- Run: `vendor/bin/phpcbf`
+- Run: `vendor/bin/phpunit tests/Commands/TodosStructurizerCommandTest.php` (need to fix)
 
 ### todo
 
-- fix and finish unittests, error during test running.
+- fix and finish phpnit tests, error during test running.
 - code refactoring

@@ -5,7 +5,6 @@ namespace VolodymyrOliinyk\TodosStructurizer\Tests\Commands;
 use Illuminate\Support\Facades\Artisan;
 use VolodymyrOliinyk\TodosStructurizer\Tests\TestCase;
 
-
 /**
  * @group todos-structurizer-command-test
  * @run vendor/bin/phpunit tests/Commands/TodosStructurizerCommandTest.php
@@ -33,7 +32,6 @@ final class TodosStructurizerCommandTest extends TestCase
         /*TODO:[todos-structurizer-demo|priority:high]:
            demo 12
         :ENDTODO*/
-
 
         /*TODO:[todos-structurizer-demo|priority:medium]:
             demo 2

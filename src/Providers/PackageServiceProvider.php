@@ -9,11 +9,11 @@ use VolodymyrOliinyk\TodosStructurizer\Exceptions\TodosStructurizerException;
 
 final class PackageServiceProvider extends ServiceProvider
 {
-    public function boot()
+    public function boot(): void
     {
         $configPath = __DIR__ . '/../publishable/config/todos-structurizer.php';
 
-        if(!file_exists($configPath)){
+        if (!file_exists($configPath)) {
             throw new TodosStructurizerException(sprintf('Incorrect config path: %s', $configPath));
         }
 
