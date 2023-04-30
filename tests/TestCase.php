@@ -9,7 +9,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
 {
     protected $withDummy = true;
 
-    public function setUp(): void
+    final public function setUp(): void
     {
         parent::setUp();
 
@@ -26,14 +26,14 @@ class TestCase extends \PHPUnit\Framework\TestCase
         }
     }
 
-    protected function getPackageProviders($app)
+    final protected function getPackageProviders($app)
     {
         return [
             PackageServiceProvider::class,
         ];
     }
 
-    public function tearDown(): void
+    final public function tearDown(): void
     {
         parent::tearDown();
 
@@ -47,7 +47,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
      *
      * @return void
      */
-    protected function getEnvironmentSetUp($app)
+    final protected function getEnvironmentSetUp($app)
     {
 //        // Setup default database to use sqlite :memory:
 //        $app['config']->set('database.default', 'testbench');
@@ -64,7 +64,7 @@ class TestCase extends \PHPUnit\Framework\TestCase
 //        $app['config']->set('auth.providers.users.model', User::class);
     }
 
-    protected function install()
+    final protected function install()
     {
 //        $this->artisan('voyager:install', ['--with-dummy' => $this->withDummy]);
 //
