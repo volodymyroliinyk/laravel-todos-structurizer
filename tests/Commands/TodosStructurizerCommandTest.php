@@ -22,8 +22,8 @@ final class TodosStructurizerCommandTest extends TestCase
             fix tests configuration, because some error:
             1) Error: Call to undefined method Illuminate\Container\Container::basePath()
          :ENDTODO*/
-        Artisan::call('todos-structurizer:collect')->assertExitCode(0);
-//        $this->artisan('todos-structurizer:collect')->assertExitCode(0);
+//        Artisan::call('todos-structurizer:collect')->assertExitCode(0);
+        $this->artisan('todos-structurizer:collect')->assertExitCode(0);
 
         /*TODO:[todos-structurizer-demo|priority:high]:
             demo 1
