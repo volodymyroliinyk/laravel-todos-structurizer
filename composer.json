@@ -33,13 +33,6 @@
     "phpstan/phpstan": "^1.10",
     "squizlabs/php_codesniffer": "^3.7"
   },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
-  "config": {
-    "sort-packages": true,
-    "preferred-install": "dist",
-    "optimize-autoloader": true
-  },
   "extra": {
     "branch-alias": {
       "dev-main": "main-dev"
@@ -49,5 +42,12 @@
         "VolodymyrOliinyk\\TodosStructurizer\\Providers\\PackageServiceProvider"
       ]
     }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true,
+  "config": {
+    "sort-packages": true,
+    "preferred-install": "dist",
+    "optimize-autoloader": true
   }
 }
