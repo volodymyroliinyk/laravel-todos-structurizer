@@ -10,12 +10,28 @@ lot of unstructured todos. And I found a way to do todos structured, this format
 
 ### How to install
 
-1) Run: `composer require volodymyroliinyk/laravel-todos-structurizer`
-2) Publish config file,
-   run: `php artisan vendor:publish --provider="VolodymyrOliinyk\TodosStructurizer\Providers\PackageServiceProvider"`
-3) Edit `todos-structurizer.php` for own needs.
+1) Modify `composer.json`: Add package and version to `require`:
 
-### How to use
+`"require": {
+...,
+"volodymyroliinyk/laravel-todos-structurizer": "v0.1.32"
+},`
+
+2) Modify `composer.json`: Add package type and url to `repositories`:
+
+`"repositories": [
+...,
+{
+"type": "vcs",
+"url": "https://github.com/volodymyroliinyk/laravel-todos-structurizer.git"
+}
+]`
+
+3) Publish config file,
+   run: `php artisan vendor:publish --provider="VolodymyrOliinyk\TodosStructurizer\Providers\PackageServiceProvider"`
+4) Edit `todos-structurizer.php` for own needs.
+
+### How to use:
 
 - Run: `php artisan todos-structurizer:collect > result_todos_structurized.log`
 - Or, run: `php artisan todos-structurizer:collect --category=some-todo-category-name > result_todos_structurized.log`
@@ -24,7 +40,7 @@ lot of unstructured todos. And I found a way to do todos structured, this format
   Available priorities: `high`,`medium`,`low`)
 - For JetBrains PhpStorm, for correct highlighting add pattern to TODO filter: `\bTODO\:((.|\n)*)\:ENDTODO\b*`
 
-### Development
+### Development:
 
 - Run: `vendor/bin/phpstan`
 - Run: `vendor/bin/phpcbf`
