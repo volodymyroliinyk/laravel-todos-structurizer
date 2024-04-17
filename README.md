@@ -32,5 +32,5 @@ lot of unstructured todos. And I found a way to do todos structured, this format
 
 ### todo
 
-- fix and finish phpnit tests, error during test running.
+- fix and finish phpunit tests, error during test running.
 - code refactoring
