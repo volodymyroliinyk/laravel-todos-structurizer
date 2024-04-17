@@ -228,7 +228,7 @@ final class TodosStructurizerCommand extends Command
         $this->line(sprintf('Total unstructured todos: %s', count($outputTableData2)));
         $this->line('');
 
-        return Command::SUCCESS;
+        return self::SUCCESS;
     }
 
     /**
@@ -347,7 +347,8 @@ final class TodosStructurizerCommand extends Command
         array &$todosCategories = [],
         array &$hashesOfStructuredTodos = [],
         array &$outputTableData = []
-    ) {
+    ): void
+    {
         $matchesCount = count($matches[0]);
 
         for ($mc = 0; $mc < $matchesCount; $mc++) {
@@ -414,7 +415,8 @@ final class TodosStructurizerCommand extends Command
         array $hashesOfStructuredTodos,
         string $basePathDirectory,
         array &$outputTableData2 = []
-    ) {
+    ): void
+    {
         $matchesCount = count($matches[0]);
 
         for ($mc = 0; $mc < $matchesCount; $mc++) {

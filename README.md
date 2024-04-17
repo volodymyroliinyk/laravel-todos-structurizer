@@ -14,7 +14,7 @@ lot of unstructured todos. And I found a way to do todos structured, this format
 
 `"require": {
 ...,
-"volodymyroliinyk/laravel-todos-structurizer": "v0.1.33"
+"volodymyroliinyk/laravel-todos-structurizer": "v0.1.35"
 },`
 
 2) Modify `composer.json`: Add package type and url to `repositories`:
