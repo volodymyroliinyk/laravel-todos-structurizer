@@ -54,5 +54,9 @@
     "sort-packages": true,
     "preferred-install": "dist",
     "optimize-autoloader": true
+  },
+  "scripts": {
+    "phpstan": "vendor/bin/phpstan",
+    "phpcbf": "vendor/bin/phpcbf"
   }
 }
