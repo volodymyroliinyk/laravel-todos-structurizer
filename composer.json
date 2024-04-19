@@ -3,6 +3,13 @@
   "description": "The package helps structurize all todos",
   "type": "library",
   "license": "MIT",
+  "keywords": [
+    "artisan",
+    "command",
+    "laravel",
+    "laravel-todos-structurizer",
+    "todo"
+  ],
   "authors": [
     {
       "role": "Developer",
@@ -31,6 +38,7 @@
     "phpunit/phpunit": "^8.0|^9.3",
     "mockery/mockery": "^1.5",
     "phpstan/phpstan": "^1.10",
+    "phpunit/phpunit": "^8.0|^9.6.19",
     "squizlabs/php_codesniffer": "^3.7"
   },
   "extra": {
@@ -46,5 +54,9 @@
     "sort-packages": true,
     "preferred-install": "dist",
     "optimize-autoloader": true
+  },
+  "scripts": {
+    "phpstan": "vendor/bin/phpstan",
+    "phpcbf": "vendor/bin/phpcbf"
   }
 }
