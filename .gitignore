@@ -1,6 +1,5 @@
-/.idea/.gitignore
-/.idea/*.xml
+/.idea/*
 /vendor/*
 /composer.lock
-/.idea/*.iml
+/composer.phar
 /.phpunit.result.cache
