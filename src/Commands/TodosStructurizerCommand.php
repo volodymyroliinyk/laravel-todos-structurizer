@@ -61,9 +61,10 @@ final class TodosStructurizerCommand extends Command
         }
 
         $basePathDirectory = base_path();
+        var_dump($basePathDirectory);
 
         $filesCollected = $this->collectingFiles($this->getDirectories());
-
+        var_dump($filesCollected);
         // Collecting structured todos.
 
         $hashesOfStructuredTodos = [];
